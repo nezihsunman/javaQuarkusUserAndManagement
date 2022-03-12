@@ -23,7 +23,7 @@ public class HelloGrpcService implements HelloGrpc {
                     return item;
                 })
                 .runSubscriptionOn(Infrastructure.getDefaultExecutor())
-                .onItem().transform(i -> HelloReply.newBuilder().setMessage("" + i.stream().map(Object::toString).reduce("",String::concat)).build());
+                .onItem().transform(i -> HelloReply.newBuilder().setMessage("" + i.stream().map(y -> y.getUserId().toString()).reduce("",String::concat)).build());
 
     }
 

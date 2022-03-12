@@ -42,13 +42,14 @@ public class UserEntry extends PanacheEntityBase {
 
     private String lastName;
 
-    public static void add(String username, String password, String firstName, String lastName) {
+    public static long add(String username, String password, String firstName, String lastName) {
         UserEntry user = new UserEntry();
         user.username = username;
         user.password = BcryptUtil.bcryptHash(password);
         user.firstName = firstName;
         user.lastName = lastName;
         user.persist();
+        return user.id;
     }
 
     public String getUsername() {

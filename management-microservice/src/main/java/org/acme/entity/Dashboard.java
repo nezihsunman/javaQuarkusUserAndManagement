@@ -21,6 +21,9 @@ enum Approved {
 @Entity
 public class Dashboard extends PanacheEntityBase {
     @Id
+    @GeneratedValue
+    private Long id;
+
     private Long userId;
     private Approved approved = Approved.NOT_APPROVED;
     private DisabledOrEnabled disabledOrEnabled = DisabledOrEnabled.DISABLED;

@@ -1,6 +1,8 @@
 package services;
+import io.quarkus.logging.Log;
 import org.acme.dto.UserDTO;
 import org.acme.entity.UserEntry;
+import org.acme.kafkaSendDataToManegamentMicSer.KafkaUserCreation;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -23,10 +25,15 @@ public class Registration {
     @Inject
     EntityManager entityManager;
 
+    @Inject
+    KafkaUserCreation kafkaUserCreation;
+
     @POST
     @Transactional
     public Response add(UserDTO userDTO) {
-        UserEntry.add(userDTO.email, userDTO.password, userDTO.firstName, userDTO.lastName);
+        var userId = UserEntry.add(userDTO.email, userDTO.password, userDTO.firstName, userDTO.lastName);
+        var res = kafkaUserCreation.generate(userId);
+        Log.info("res from kafka" + res.toString());
         return Response.ok().build();
     }
 }
