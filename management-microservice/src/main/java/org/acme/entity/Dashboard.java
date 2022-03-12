@@ -1,22 +1,14 @@
 package org.acme.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.acme.enums.Approved;
+import org.acme.enums.DisabledOrEnabled;
 
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.List;
-
-enum DisabledOrEnabled {
-    ENABLED,
-    DISABLED
-}
-enum Approved {
-    APPROVED,
-    NOT_APPROVED
-}
 
 @Entity
 public class Dashboard extends PanacheEntityBase {
@@ -25,8 +17,9 @@ public class Dashboard extends PanacheEntityBase {
     private Long id;
 
     private Long userId;
-    private Approved approved = Approved.NOT_APPROVED;
+    private Approved approved = Approved.WaitingForApprove;
     private DisabledOrEnabled disabledOrEnabled = DisabledOrEnabled.DISABLED;
+    private String username;
 
     public Long getUserId() {
         return userId;
@@ -55,4 +48,11 @@ public class Dashboard extends PanacheEntityBase {
         return Dashboard.listAll();
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

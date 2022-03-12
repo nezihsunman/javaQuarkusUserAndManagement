@@ -5,29 +5,13 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Username;
+import org.acme.enums.Approved;
+import org.acme.enums.DisabledOrEnabled;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-/**
- * Example JPA entity.
- *
- * To use it, get access to a JPA EntityManager via injection.
- *
- * {@code
- *     @Inject
- *     EntityManager em;
- *
- *     public void doSomething() {
- *         MyEntity entity1 = new MyEntity();
- *         entity1.setField("field-1");
- *         em.persist(entity1);
- *
- *         List<MyEntity> entities = em.createQuery("from MyEntity", MyEntity.class).getResultList();
- *     }
- * }
- */
 @Entity
 public class UserEntry extends PanacheEntityBase {
     @Id
@@ -41,6 +25,10 @@ public class UserEntry extends PanacheEntityBase {
     private String firstName;
 
     private String lastName;
+
+    private Approved approved = Approved.WaitingForApprove;
+
+    private DisabledOrEnabled disabledOrEnabled = DisabledOrEnabled.DISABLED;
 
     public static long add(String username, String password, String firstName, String lastName) {
         UserEntry user = new UserEntry();
@@ -82,5 +70,29 @@ public class UserEntry extends PanacheEntityBase {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Approved getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Approved approved) {
+        this.approved = approved;
+    }
+
+    public DisabledOrEnabled getDisabledOrEnabled() {
+        return disabledOrEnabled;
+    }
+
+    public void setDisabledOrEnabled(DisabledOrEnabled disabledOrEnabled) {
+        this.disabledOrEnabled = disabledOrEnabled;
     }
 }

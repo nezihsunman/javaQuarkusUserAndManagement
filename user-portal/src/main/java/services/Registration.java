@@ -1,5 +1,7 @@
 package services;
 import io.quarkus.logging.Log;
+import io.vertx.ext.auth.User;
+import org.acme.dto.CreatedUserDto;
 import org.acme.dto.UserDTO;
 import org.acme.entity.UserEntry;
 import org.acme.kafkaSendDataToManegamentMicSer.KafkaUserCreation;
@@ -31,9 +33,11 @@ public class Registration {
     @POST
     @Transactional
     public Response add(UserDTO userDTO) {
-        var userId = UserEntry.add(userDTO.email, userDTO.password, userDTO.firstName, userDTO.lastName);
-        var res = kafkaUserCreation.generate(userId);
-        Log.info("res from kafka" + res.toString());
-        return Response.ok().build();
+        if (UserEntry.list("username", userDTO.email).size() == 0) {
+            var userId = UserEntry.add(userDTO.email, userDTO.password, userDTO.firstName, userDTO.lastName);
+            var res = kafkaUserCreation.generate(new CreatedUserDto(userId, userDTO.email));
+            Response.ok().build();
+        }
+        return Response.status(409).build();
     }
 }

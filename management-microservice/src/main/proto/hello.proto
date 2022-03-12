@@ -6,14 +6,29 @@ option java_outer_classname = "HelloGrpcProto";
 
 package hello;
 
-service HelloGrpc {
-    rpc SayHello (HelloRequest) returns (HelloReply) {}
+service ManagementGrpc {
+    rpc GetListOfUser (HelloRequest) returns (UserReply) {}
+    rpc ApproveListOfUser (ApproveOrDisapproveUserDto) returns (UserReply) {}
+    rpc EnableOrDisableUser (EnableOrDisableDto) returns (UserReply) {}
 }
 
 message HelloRequest {
-    string name = 1;
 }
 
-message HelloReply {
-    string message = 1;
+message UserReply {
+    repeated DashBoardDTO response = 1;
+}
+message DashBoardDTO {
+    uint64 userId = 1;
+    string ApprovedOrNot = 2;
+    string DisabledOrEnabled = 3;
+    string Username = 4;
+}
+message EnableOrDisableDto {
+    uint64 userId = 1;
+    string DisabledOrEnabled = 2;
+}
+message ApproveOrDisapproveUserDto {
+    uint64 userId = 1;
+    string ApprovedOrNot = 2;
 }

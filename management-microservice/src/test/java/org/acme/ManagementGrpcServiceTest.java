@@ -10,10 +10,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-public class HelloGrpcServiceTest {
+public class ManagementGrpcServiceTest {
 
     @GrpcClient
-    HelloGrpc helloGrpc;
+    ManagementGrpc helloGrpc;
 
     @Test
     public void testHello() {
