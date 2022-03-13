@@ -65,7 +65,7 @@ class RegistrationTest {
         given().contentType(ContentType.JSON).body(userDTO)
                 .when()
                 .post("/registration")
-                .then().statusCode(200);
+                .then().statusCode(409);
     }
     @Test
     void notAdd() {
