@@ -33,22 +33,19 @@ public class Login {
     @POST
     @Transactional
     public Response login(LoginDto loginDto) {
-        var password = BcryptUtil.bcryptHash(loginDto.password);
         UserEntry entity = Utils.getEntityByUserName(this.entityManager, loginDto.email);
-        if (entity.password.equals(password) && entity.getDisabledOrEnabled().equals(DisabledOrEnabled.ENABLED) && entity.getApproved().equals(Approved.APPROVED)  ){
-            Response.ok("Successfully login");
+        if (BcryptUtil.matches(loginDto.password,entity.password) && entity.getDisabledOrEnabled().equals(DisabledOrEnabled.ENABLED) && entity.getApproved().equals(Approved.APPROVED)  ){
+            return Response.status(200,"Successfully login").build();
         }
-        else if (!entity.password.equals(password)) {
+        else if (!(BcryptUtil.matches(loginDto.password,entity.password))) {
             //successfully login
             return Response.status(401,"Password not correct").build();
         }
         else if (entity.getDisabledOrEnabled().equals(DisabledOrEnabled.DISABLED)) {
             return Response.status(401,"Your user is disabled").build();
         }
-        else if (entity.getApproved().equals(Approved.NOT_APPROVED)) {
-            return Response.status(401,"Your user is not approved by admin").build();
-        }
-        return Response.status(401,"Not login successfully").build();
+        return Response.status(401,"Your user is not approved by admin").build();
+
 
     }
 }
