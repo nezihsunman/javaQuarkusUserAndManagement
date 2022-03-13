@@ -1,5 +1,6 @@
 package org.acme.GrpcService;
 
+import io.quarkus.grpc.GrpcClient;
 import io.quarkus.grpc.GrpcService;
 
 import io.smallrye.mutiny.Uni;
